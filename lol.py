@@ -1,17 +1,46 @@
-# TASK_5
+class Hash_Table:
+    def __init__(self, size = 7):
+        self.data_map = [None]*size
 
-given_tuple = (10, 8, 5, 2, 10, 15, 10, 8, 5, 8, 8, 2)
-blob = 0
+    def __hash(self, key):
+        my_hash = 0
+        for letter in key:
+            my_hash = (my_hash+ord(letter)*23)%len(self.data_map)
+        return my_hash
 
-x = int(input('Entah a number boi: '))
+    def insert(self, key, value):
+        index = self.__hash(key)
+        if self.data_map[index] == None:
+            self.data_map[index] = []
+        self.data_map[index].append([key, value])
 
-for i in given_tuple:
-    if i == x:
-        blob += 1
-    else:
-        pass
+    def get(self, key):
+        index = self.__hash(key)
+        if self.data_map[index] is not None:
+            for i in range(len(self.data_map[index])):
+                if self.data_map[index][i][0]==key:
+                    return self.data_map[index][i][1]
+        return None
 
-if blob == 0:
-    print("Numbeh not in 'ere mate")
-else:
-    print("Number in 'ere "+str(blob)+" times mate")
+    def keys(self):
+        all_keys = []
+        for i in range(len(self.data_map)):
+            if self.data_map[i] is not None:
+                for j in range(len(self.data_map[i])):
+                    all_keys.append(self.data_map[i][j][0])
+        return all_keys
+
+    def printTable(self):
+        for i, val in enumerate(self.data_map):
+            print(f'{i}:{val}')
+
+ht1 = Hash_Table()
+ht1.printTable()
+print(ht1.data_map)
+print('=========')
+ht1.insert('bolts', 1200)
+ht1.insert('washers', 1000)
+ht1.insert('lumber', 2000)
+ht1.printTable()
+print(ht1.get('lumber'))
+print(ht1.keys())
